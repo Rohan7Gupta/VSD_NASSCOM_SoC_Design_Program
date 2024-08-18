@@ -1,3 +1,9 @@
+https://github.com/efabless/openlane2
+https://openlane.readthedocs.io/en/latest/
+https://github.com/nickson-jose/vsdstdcelldesign
+http://opencircuitdesign.com/magic/
+
+
 docker
 pwd
 ls -ltr
