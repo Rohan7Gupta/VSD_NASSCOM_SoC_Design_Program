@@ -31,34 +31,4 @@ vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcel
 
 
 
-### spice code
 
-* SPICE3 file created from sky130_inv.ext - technology: sky130A
-
-.option scale=0.01u
-
-//.subckt sky130_inv A Y VPWR VGND
-
-.include ./libs/pshort.lib
-.include ./libs/nshort.lib
-
-M1000 Y A VGND VGND nshort_model.0 ad=1.44n pd=0.152m as=1.37n ps=0.148m w=35 l=23
-M1001 Y A VPWR VPWR pshort_model.0 ad=1.44n pd=0.152m as=1.52n ps=0.156m w=37 l=23
-
-VDD VPWR 0 3.3V
-VSS VGND 0 0V
-Va A GND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
-
-C0 VPWR Y 0.117f
-C1 A Y 0.0754f
-C2 A VPWR 0.0774f
-C3 Y 0 0.279f
-C4 A 0 0.45f
-C5 VPWR 0 0.781f
-//.ends
-
-.tran 1n 20n
-.control 
-run
-.endc
-.end
