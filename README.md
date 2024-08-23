@@ -35,3 +35,45 @@ Fig: Exploring Openlane directory
 Fig: Synthesis result
 ![Synthesis resultant files exploration](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day1/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_03_07_04.png)
 Fig: Synthesis resultant files exploration
+
+# Day 2
+- Floorplanning
+- Define width and height of core and die
+- Define locaation of preplaced cells
+- Decoupling Capacitor
+- Power planning
+- Pin placement
+- Logical cell placement blockage
+
+```
+run_floorplan
+```
+or
+```
+init_floorplan
+place_io
+tap_decap_or
+```
+To check floorplan layout
+```
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+```
+
+- Placement
+- Bind netlist with physical cells
+- optimize placement using wire length and capacitance
+- Repeters to maintain signal integrity but loss of area
+- capacitance leads to slew
+
+```
+run_placement
+```
+check output
+```
+~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-08_03-33/results/placement$ magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
+optimization
+```
+set ::env(FP_IO_MODE) 2
+run_floorplan
+```
