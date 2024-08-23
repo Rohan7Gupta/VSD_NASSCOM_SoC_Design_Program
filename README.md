@@ -1,11 +1,16 @@
-https://github.com/efabless/openlane2
-https://openlane.readthedocs.io/en/latest/
-https://github.com/nickson-jose/vsdstdcelldesign
-http://opencircuitdesign.com/magic/
-https://github.com/google/skywater-pdk
-https://skywater-pdk.readthedocs.io/en/main/
+# Digital VLSI design & SoC planning - NASSCOM, VSD
+## Day 1
+- introduction to open source SoC design tools and the various parties involved
+- introduction to Openlane flow
+- tool installation
+- exploring openlane tool directory
+- running tool using interactive flow
+- preping design
+- running synthesis
+- checking output files
+- assignment : Flop ratio = 1613/14876 = 0.10842968539930088733530518956709 = 10.84%
 
-
+```
 docker
 pwd
 ls -ltr
@@ -14,29 +19,12 @@ package require openlane 0.9
 prep -design picorv32a
 run_synthesis
 
-task 1: Flop ratio = 1613/14876 = 0.10842968539930088733530518956709 = 10.84% 
+```
 
-run_floorplan
-
-magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
-
-run_placement
-
-~/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-08_03-33/results/placement$ magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
-
-set ::env(FP_IO_MODE) 2
-run_floorplan 
-
-custom cell
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic$ cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130.tech sky130_inv.mag 
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130A.tech sky130_inv.mag 
-
-
-
-
+![Open source EDA tools](day1/1.png)
+![Openlane ASIC flow](day1/Untitled picture.png)
+![RTL to GDSII flow ](day1/2.png)
+![Openlane interactive flow](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day1/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_01_52_30.png)
+![Exploring Openlane directory](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day1/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_03_06_15.png)
+![Synthesis result](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day1/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_02_58_13.png)
+![Synthesis resultant files exploration](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day1/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_03_07_04.png)
