@@ -44,6 +44,8 @@ Fig: Synthesis resultant files exploration
 - Power planning
 - Pin placement
 - Logical cell placement blockage
+- Die area = (660685/1000)(671405/1000) = 443,587.212425 sq um
+
 
 ```
 run_floorplan
@@ -92,3 +94,8 @@ run_floorplan
 - input 1-8 to GUNa software (Fig)
 - - Timing & noise power characterization output
   
+- Timing introduction
+- - Timing threshold definitions
+  - Timing characterization
+  - - Propagation delay
+    - Transition time
