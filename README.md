@@ -77,3 +77,18 @@ optimization
 set ::env(FP_IO_MODE) 2
 run_floorplan
 ```
+
+- Library characterization and modelling
+- Cell design flow
+- Characterization flow
+- - Read model file
+  - read extracted spice netlist
+  - define buffer behavior
+  - read buffer subcircuit
+  - read necessary power supply
+  - attach stimulus to charcterization setup
+  - give necessary output capacitance
+  - give simulation command (.trans, .dc)
+- input 1-8 to GUNa software (Fig)
+- - Timing & noise power characterization output
+  
