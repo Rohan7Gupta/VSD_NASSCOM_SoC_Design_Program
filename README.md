@@ -122,4 +122,4 @@ Fig: Placed cells
   - - Propagation delay
       ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/prop%20delay.png)
     - Transition time
-      
+      ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/transition.png)
