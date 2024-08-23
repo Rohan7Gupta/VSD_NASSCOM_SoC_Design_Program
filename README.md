@@ -60,7 +60,20 @@ To check floorplan layout
 ```
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
 ```
-
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/floorplan%20ready.png)
+Fig: Floorplan results
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_17_29_16.png)
+Fig: Floorplanning log file exploration
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_15_08_2024_18_10_14.png)
+Fig: Floorplanning log file exploration
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/15-08%20config%20tcl.png)
+Fig: Floorplanning logs
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_08_55_02.png)
+Fig: Floorplanning layout
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_08_55_59.png)
+Fig: Showing decapacitors
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_08_57_08.png)
+Fig: preplaced cells
 - Placement
 - Bind netlist with physical cells
 - optimize placement using wire length and capacitance
@@ -79,9 +92,16 @@ optimization
 set ::env(FP_IO_MODE) 2
 run_floorplan
 ```
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_09_09_59.png)
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_09_11_58.png)
+Fig: Placement result
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/VirtualBox_vsdworkshop_nasscom_rohan_16_08_2024_09_12_25.png)
+Fig: Placed cells
 
 - Library characterization and modelling
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/Library%20characterization%20and%20modelling.png)
 - Cell design flow
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/Cell%20design%20flow.png)
 - Characterization flow
 - - Read model file
   - read extracted spice netlist
@@ -91,11 +111,15 @@ run_floorplan
   - attach stimulus to charcterization setup
   - give necessary output capacitance
   - give simulation command (.trans, .dc)
-- input 1-8 to GUNa software (Fig)
+- input 1-8 to GUNa software (Fig below)
 - - Timing & noise power characterization output
-  
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/characteriztion%201.png)
+![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/characterization%202.png)
 - Timing introduction
 - - Timing threshold definitions
+    ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/Timing.png)
   - Timing characterization
   - - Propagation delay
+      ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/prop%20delay.png)
     - Transition time
+      
