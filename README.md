@@ -317,6 +317,18 @@ Fig: Synthesis successful
 Fig: pre-STA result
 - set synth strategy from AREA 0 to DELAY 0 (to reduce delay & slack)
 ![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_00_09](https://github.com/user-attachments/assets/8e023432-fd70-4090-be61-1e146e086498)
+```
+Chip area for module '\picorv32a': 147712.918400
+tns -711.59
+wns -23.89
+
+change strategy from AREA 0 to DELAY
+
+Chip area for module '\picorv32a': 196832.528000
+tns 0.00
+wns 0.00
+
+```
 - set synth buffering & sizing
 ![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_13_35](https://github.com/user-attachments/assets/7f659ac7-e8db-4e8f-a8e4-1d880f131eb5)
 
@@ -344,14 +356,91 @@ run_placement
 
 ![rohang_placement_1](https://github.com/user-attachments/assets/7462d9dd-d203-4f93-83c0-45a232023fc6)
 Fig: Our cell in placement
+### Introduction to delay tables
+![image](https://github.com/user-attachments/assets/73b8f7b7-d1a4-429b-927a-839468e0970a)
 
-### running pre STA 
+- Output Buffer capacitance not constant at different levels
+  - Output load of one level input to another
+  - Varying input transition at i/p of buffer
+  - Varying output load at output of buffer
+  - Hence varying delays
+  - Hence we need delay table
+  - Delay tables seperate for different gated/ logic devices
+  - Here we tabularize buffer delay and characteristics
+
+![image](https://github.com/user-attachments/assets/cae9122c-f962-47b6-9a53-b73a31e17a24)
+![image](https://github.com/user-attachments/assets/c47e7bdc-554e-4fe6-b782-c67f427b8fdc)
+  - delay at pt B = x9' + y15
+  - delay at pt C = x9' + y15 , Hence we get slew = 0
+
+  - But here if the level has different buffer sizes, we get slew
+    - x9' + y15 & x9' + y17 ==> slew = y15-y17
+- Hence we require identical buffer at same level
+- and node driving same load at each level
+
+- Now we deal with power in cts
+  - ![image](https://github.com/user-attachments/assets/50ad3ca9-352f-48d6-a752-84791a98b135)
+  - We do not need to propagate clock to inactive buffers
+
+### running pre STA with ideal clocks using openSTA
+![image](https://github.com/user-attachments/assets/f168834e-fed4-485e-a6d2-994c6a41fe15)
+Fig: theta -> comb delay, T -> clk time, S-> setup time
+![image](https://github.com/user-attachments/assets/21578bbb-1ea8-423e-a97f-965be22e9161)
+![image](https://github.com/user-attachments/assets/d1686714-dbb0-40b0-a1cc-9584762658f8)
+
+
 - creating stc file
-- ![my base sdc](https://github.com/user-attachments/assets/541fa5b2-a3d5-413d-8860-3c22381dc261)
-- ![pre_sta](https://github.com/user-attachments/assets/29b0146f-72bd-4514-9b30-81ac4177ba38)
+  - ![my base sdc](https://github.com/user-attachments/assets/541fa5b2-a3d5-413d-8860-3c22381dc261)
+```
+set ::env(CLOCK_PORT) clk
+set ::env(CLOCK_PERIOD) 12.000
+#set ::env(SYNTH_DRIVING_CELL) sky130_vsdinv
+set ::env(SYNTH_DRIVING_CELL) sky130_fd_sc_hd__inv_8
+set ::env(SYNTH_DRIVING_CELL_PIN) Y
+set ::env(SYNTH_CAP_LOAD) 22.85
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set IO_PCT 0.2
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+
+
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace [all inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+
+
+#correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+set_load $cap_load [all_outputs]
+
+```
+  - ![pre_sta](https://github.com/user-attachments/assets/29b0146f-72bd-4514-9b30-81ac4177ba38)
 Fig: Pre STA config
-- ![slack22](https://github.com/user-attachments/assets/52827eed-7253-4192-b5da-26299e31d008)
-- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_00_20_16](https://github.com/user-attachments/assets/6079435b-6dc2-4d3f-9a4e-12bf93addf39)
+```
+set cmd units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -distance um
+read_liberty -max /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib
+read_liberty -min /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib
+read_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/19-08_14-31/results/synthesis/picorv32a.synthesis.v
+link_design picorv32a
+read_sdc /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/my_base.sdc
+report_checks -path_delay min_max -fields {slew trans net cap input_pin}
+report_tns
+report_wns
+
+```
+  - ![slack22](https://github.com/user-attachments/assets/52827eed-7253-4192-b5da-26299e31d008)
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_00_20_16](https://github.com/user-attachments/assets/6079435b-6dc2-4d3f-9a4e-12bf93addf39)
 
 Fig: Slack after STA
 - To improve slack
@@ -368,12 +457,122 @@ Fig: Slack after STA
   - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_07_12_49](https://github.com/user-attachments/assets/d8c835c3-bf1e-43f0-84c1-5f7493874ee9)
 
 ### Run Clock tree synthesis
-![image](https://github.com/user-attachments/assets/cae9122c-f962-47b6-9a53-b73a31e17a24)
-![image](https://github.com/user-attachments/assets/c47e7bdc-554e-4fe6-b782-c67f427b8fdc)
+![image](https://github.com/user-attachments/assets/5056ef55-f4d8-4708-9e68-3d9a3c208823)
+Fig: clock needs to be propagated
+![image](https://github.com/user-attachments/assets/e9aedea5-f928-4c1c-88c9-0577efda03f0)
+Fig: example tree
+![image](https://github.com/user-attachments/assets/5f8328a3-1fa7-478a-b865-0cee0f2225c8)
+Fig: skew ==> bad tree
+![image](https://github.com/user-attachments/assets/28273809-1c93-4494-ac34-ffb296ad0d94)
+- H algorithm
+  - almost zero skew
+  - Now theres huge amt of capacotances
+    - signal integrety problem
+    - Add repeters
+    - ![image](https://github.com/user-attachments/assets/b93233db-10fe-447e-a578-3aaf620fb512)
+  - another problem : crosstalk
+    - ![image](https://github.com/user-attachments/assets/53ff0488-47fb-4c29-b758-6bde776b07ef)
+    - ![image](https://github.com/user-attachments/assets/f3366aa7-4b43-40a5-acd4-90f60a37a4eb)
+    - sheilding wire connected to vdd and gnd as these wires do not switch
+    - ![image](https://github.com/user-attachments/assets/f4a99d09-5b86-4615-81a4-12fdf6d80556)
+  - as we design clock tree for zero skew, due to cross talk, delta delay and hence skew increases
+    - thus as buffer inc, skew inc
+  - ideally we should sheild all critical and clk nets seince we cannot shield everything due to routing constraints.
+ 
+- Now we run cts
+```
+run_cts
+```
+
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_08_13_59](https://github.com/user-attachments/assets/3327fcf1-537b-4164-85db-519ea07d4bad)
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_08_15_07](https://github.com/user-attachments/assets/37742f1a-7f2f-48b7-b6c9-6999ba86b5fb)
+Fig: cts done, slack met
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_12_48_46](https://github.com/user-attachments/assets/69f824be-fe76-495c-9e75-adb2d9bfff3c)
+Fig: post cts layout
+
+### Timing analysis with real clock using openroad
+##### setup timing analysis
+![image](https://github.com/user-attachments/assets/7e7e9ea4-e932-407c-992a-1b765adc1920)
+![image](https://github.com/user-attachments/assets/1eb6c4fa-0513-4ad4-aa79-782644fc0810)
+
+![image](https://github.com/user-attachments/assets/430e92e5-e0ba-4ed4-bc00-f12120556a86)
+
+##### hold timing analysis
+![image](https://github.com/user-attachments/assets/e941fdee-c7e8-475a-99ef-8cefc55464ac)
+![image](https://github.com/user-attachments/assets/20dcdc24-8d3d-4c67-a100-e243db872e75)
+![image](https://github.com/user-attachments/assets/0363b477-ad41-4867-b0f2-961fd5f0d4d5)
+
+![image](https://github.com/user-attachments/assets/92e720e8-ec3e-4da3-ba0b-72aa03c41973)
+
+##### timing analysis
+![image](https://github.com/user-attachments/assets/b0fc252e-e46a-4e34-b8c8-3700b63af41a)
+![image](https://github.com/user-attachments/assets/490c39e4-1736-4750-a9ba-7855c1f3244c)
+![image](https://github.com/user-attachments/assets/d4512597-f076-45c4-b4e5-99f833431403)
+
+##### using openroad
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_13_31_23](https://github.com/user-attachments/assets/5307ce8d-6603-463e-8377-d2a60c28aeec)
+
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_13_42_43](https://github.com/user-attachments/assets/db7e51e4-eb0a-4355-95d3-db212db0cbc4)
+Fig: 
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_14_56_47](https://github.com/user-attachments/assets/9da93d80-2416-4bbf-85ff-4154dde9c5bd)
+![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_14_56_47](https://github.com/user-attachments/assets/65d8a9e0-f1ee-4ac9-9250-f8d8908245fe)
+Fig: commands
+- Results
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_14_57_01](https://github.com/user-attachments/assets/5c3c50c8-d575-4bc6-9c49-7e60335f79d6)
+    Fig: hold slack
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_15_01_04](https://github.com/user-attachments/assets/ae63cbff-7dfb-444d-9179-e7423eba594c)
+    Fig: setup slack
+```
+
+hold: -0.1354   slack (VIOLATED)
+setup : 5.2541   slack (MET)
+
+lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0
+
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
 
 
+hold:  0.1407   slack (MET) 
+setup : 5.2886   slack (MET)
 
+% report_clock_skew -hold
+Clock clk
+Latency      CRPR       Skew
+_38295_/CLK ^
+   1.31
+_37393_/CLK ^
+   0.82      0.00       0.48
 
+```
+Now that our slack requirements are met, we can proceed to routing
 
+##### code openroad
+```
+% openroad
+OpenROAD 0.9.0 1415572a73
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+% read_lef /openLANE_flow/designs/picorv32a/runs/20-08_02-38/tmp/merged.lef
+Notice 0: Reading LEF file:  /openLANE_flow/designs/picorv32a/runs/20-08_02-38/tmp/merged.lef
+Notice 0:     Created 13 technology layers
+Notice 0:     Created 25 technology vias
+Notice 0:     Created 443 library cells
+Notice 0: Finished LEF file:  /openLANE_flow/designs/picorv32a/runs/20-08_02-38/tmp/merged.lef
+% read_def /openLANE_flow/designs/picorv32a/runs/20-08_02-38/results/cts/picorv32a.cts.def
+Notice 0: 
+Reading DEF file: /openLANE_flow/designs/picorv32a/runs/20-08_02-38/results/cts/picorv32a.cts.def
+Notice 0: Design: picorv32a
+Notice 0:     Created 409 pins.
+Notice 0:     Created 29412 components and 168779 component-terminals.
+Notice 0:     Created 21072 nets and 70765 connections.
+Notice 0: Finished DEF file: /openLANE_flow/designs/picorv32a/runs/20-08_02-38/results/cts/picorv32a.cts.def
+% write_db pico_cts1.db
+% read_db pico_cts1.db
+% read_verilog /openLANE_flow/designs/picorv32a/runs/20-08_02-38/results/synthesis/picorv32a.synthesis_cts.v
+% read_liberty $::env(LIB_SYNTH_COMPLETE)
+1
+% link_design picorv32a
+[WARNING ORD-1000] LEF master sky130_fd_sc_hd__tapvpwrvgnd_1 has no liberty cell.
+% 
 
-
+```
