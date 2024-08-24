@@ -579,3 +579,140 @@ Notice 0: Finished DEF file: /openLANE_flow/designs/picorv32a/runs/20-08_02-38/r
 % 
 
 ```
+## Day 5
+### Maze Routing
+- Lee's algorithm
+- - create sorting grid
+  - mark source S and target T
+  - label all adjacent grid pts to Source (verticle & horizontal) as 1
+  - label adjacent grid boxes with next integer
+  - We can label under blockgae but no path can go through blockage
+  - Continue till target reach
+  - ![image](https://github.com/user-attachments/assets/0834f2d6-d2c6-49fc-b21c-eb0d05c7388d)
+  - Route with least bends preferred
+  - ![image](https://github.com/user-attachments/assets/a4a0882e-da09-4961-a5a0-b5be81f828d1)
+  - ![image](https://github.com/user-attachments/assets/04825d0e-0aa7-44b7-bf62-8cc03045ceb5)
+  - ![image](https://github.com/user-attachments/assets/870fc100-c5dd-4442-8d6a-2e0dfea2de9f)
+- Design Rule Check
+- - ![image](https://github.com/user-attachments/assets/99ba8a19-1cf0-4d98-88d3-719d95aa30b0)
+  - ![image](https://github.com/user-attachments/assets/89cdfda1-fd59-4fbb-ac88-db7eaeca52e2)
+  - ![image](https://github.com/user-attachments/assets/59f0d61b-cf62-4c36-89d0-91b52b691579)
+  - ![image](https://github.com/user-attachments/assets/c1524264-3eb9-4427-aa95-217382344472)
+  - ![image](https://github.com/user-attachments/assets/a4d95f8e-b6d7-4e05-a1fc-cb448da8c30a)
+  - ![image](https://github.com/user-attachments/assets/cf2d1094-086b-48a5-a06f-cc963eb650bc)
+  - ![image](https://github.com/user-attachments/assets/49511a0c-dc9e-4d44-9e8c-dfec5e42a19f)
+  - ![image](https://github.com/user-attachments/assets/5a47a0cc-4b2d-42ea-ac70-e58995ef288c)
+- Parasitics extraction : Resistance and capacitance of wire needs to be extracted for further steps
+- ![image](https://github.com/user-attachments/assets/1564edb2-b6df-4a75-b4c5-e76efc79cb38)
+
+### building power distribution network
+- checking last executed step is cts
+```
+% prep -design picorv32a -tag 20-08_02-38
+% echo $::env(CURRENT_DEF)
+/openLANE_flow/designs/picorv32a/runs/20-08_02-38/results/cts/picorv32a.cts.def
+```
+- now we generate pdn
+```
+gen_pdn
+```
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_20_23_21](https://github.com/user-attachments/assets/eb8b68e6-86ef-4dbc-91f5-e76c8534fa7c)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_20_25_06](https://github.com/user-attachments/assets/89548ba3-7163-4610-96bb-2f8e3f46804a)
+- pdn results
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_20_26_21](https://github.com/user-attachments/assets/cc62b533-1b19-44b7-a70c-d0da1e080cf0)
+- Height of std cell multiples of 2.72 so it can get power and gnd
+- ![image](https://github.com/user-attachments/assets/79135bda-d80b-4053-a936-146459301114)
+
+### TritonRoute
+- ![image](https://github.com/user-attachments/assets/e683e0f0-36d3-4a99-bcb7-3d94aa9fa2d3)
+- ![image](https://github.com/user-attachments/assets/ee04fb85-74b1-438b-bb7e-83b366a4fe0f)
+- ![image](https://github.com/user-attachments/assets/16ca940f-0845-4361-b2f2-b76255703607)
+- ![image](https://github.com/user-attachments/assets/347920df-b0f3-450c-a0e5-22732e11f0e8)
+- ![image](https://github.com/user-attachments/assets/f098320e-a308-48a0-acbd-46441c3c34a4)
+- Dashed lines: panel, a routing guide for each panel, routing happening at all even index
+- Intro layer parallel  routing
+- Routing between different layers(m1 to m2) sequential![image](https://github.com/user-attachments/assets/9ee849bc-101c-4d09-a80a-b2a81b5dab0b)
+- ![image](https://github.com/user-attachments/assets/cc4a3686-3494-4e00-ae17-da8d755f182a)
+- When m1 to m2 completed, then only m2 to m3 starts and so on
+- ![image](https://github.com/user-attachments/assets/ae8308ee-004e-405a-b8c8-e560b390dc47)
+- TritonRoute method to handle connectivity
+- ![image](https://github.com/user-attachments/assets/ec1942f3-b7b4-4970-8b94-341da8e9fbca)
+- No DRC violation
+- ![image](https://github.com/user-attachments/assets/14f90032-ccc8-4ed5-9f56-db2fb99f16fb)
+- Routing topology algorithm
+- ![image](https://github.com/user-attachments/assets/45483b04-4bcb-4dc2-b2db-dc2672df4bbe)
+
+### routing using tritonroute
+```
+run_routing
+```
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_19_19](https://github.com/user-attachments/assets/8121f455-e355-48f0-9564-9765fa5abe0e)
+- Fig: last step pdn
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_24_20](https://github.com/user-attachments/assets/2772646d-7634-40ef-8ad7-7fbfd4c4c479)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_31_23](https://github.com/user-attachments/assets/78e3e2b4-1f32-4fe3-aecc-cb40febf1c6f)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_31_41](https://github.com/user-attachments/assets/6ab4c6e7-a8a4-421f-b7e0-5c85cabb7a35)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_31_53](https://github.com/user-attachments/assets/edf19f22-4f70-4026-961d-d7b2eb26c4b9)
+- Fig: Routing done
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_32_59](https://github.com/user-attachments/assets/0177e67a-3cd8-4e55-bc4c-99612b73eeb8)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_33_10](https://github.com/user-attachments/assets/c78f7741-3fe2-415b-9d56-d3f5f4bd410d)
+- Routing done with zero violations (long process run)
+- Extract spef
+- Now we run post STA
+```
+# Command to run OpenROAD tool
+openroad
+
+# Reading lef file
+read_lef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/tmp/merged.lef
+
+# Reading def file
+read_def /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.def
+
+# Creating an OpenROAD database to work with
+write_db pico_route.db
+
+# Loading the created database in OpenROAD
+read_db pico_route.db
+
+# Read netlist post CTS
+read_verilog /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/synthesis/picorv32a.synthesis_preroute.v
+
+# Read library for design
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+# Link design and library
+link_design picorv32a
+
+# Read in the custom sdc we created
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+# Setting all cloks as propagated clocks
+set_propagated_clock [all_clocks]
+
+# Read SPEF
+read_spef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.spef
+
+# Generating custom timing report
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+# Exit to OpenLANE flow
+exit
+```
+- exploring resultant files
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_42_24](https://github.com/user-attachments/assets/f87ee58e-f596-40b8-84f1-74a69fb3a9f6)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_55_47](https://github.com/user-attachments/assets/fcd9d6bc-39fa-46fb-a588-e5f40376e349)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_22_57_53](https://github.com/user-attachments/assets/883f95c7-4bc1-4290-ba13-4f6af8b9f886)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
