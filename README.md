@@ -127,15 +127,15 @@ Fig: Placed cells
 
 # Day 3
 - Std cell desgined and available at https://github.com/nickson-jose/vsdstdcelldesign
-- Not covered in detail in this course
-- Study spice deck for cell
-- study cell model files
-- Evaluate effect of size of pmos and nmos cells
-- Extract cell
-- study cell layout using magic & check drc (lab)
-- run ngspice simulation
-- calculated
-  - fall transition
+  - Not covered in detail in this course
+  - Study spice deck for cell
+  - study cell model files
+  - Evaluate effect of size of pmos and nmos cells
+  - Extract cell
+  - study cell layout using magic & check drc (lab)
+  - run ngspice simulation
+  - calculated
+    - fall transition
 ```
 x0 = 2.18e-09, y0 = 0.66
 
@@ -143,7 +143,7 @@ x0 = 2.121e-09, y0 = 2.63979
 
 ==> 0.059ns
 ```
-  - rise transition
+    - rise transition
 ```
 x0 = 4.02002e-09, y0 = 0.659928
 
@@ -151,14 +151,14 @@ x0 = 4.08115e-09, y0 = 2.64128
 
 ==> 0.06113 ns
 ```
-  - fall delay
+     - fall delay
 ```
 x1 = 2.15007e-09, y1 = 1.65
 x0 = 2.18664e-09, y0 = 1.65
 
 ==> 0.03657 ns
 ```
-  - rise delay
+    - rise delay
 ```
 x0 = 4.05002e-09, y0 = 1.64994
 
@@ -166,7 +166,7 @@ x0 = 4.05322e-09, y0 = 1.65012
 
 ==> 0.0032 ns
 ```
-- custom cell
+  - custom cell
 ```
 vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
 
