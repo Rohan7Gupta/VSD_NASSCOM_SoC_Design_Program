@@ -345,7 +345,35 @@ run_placement
 ![rohang_placement_1](https://github.com/user-attachments/assets/7462d9dd-d203-4f93-83c0-45a232023fc6)
 Fig: Our cell in placement
 
-### running pre STA
+### running pre STA 
+- creating stc file
+- ![my base sdc](https://github.com/user-attachments/assets/541fa5b2-a3d5-413d-8860-3c22381dc261)
+- ![pre_sta](https://github.com/user-attachments/assets/29b0146f-72bd-4514-9b30-81ac4177ba38)
+Fig: Pre STA config
+- ![slack22](https://github.com/user-attachments/assets/52827eed-7253-4192-b5da-26299e31d008)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_00_20_16](https://github.com/user-attachments/assets/6079435b-6dc2-4d3f-9a4e-12bf93addf39)
+
+Fig: Slack after STA
+- To improve slack
+  - Decrease max fanout
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_00_25_18](https://github.com/user-attachments/assets/f034444b-977f-4b6e-808b-fffdb3d326e4)
+  - Replace cells with higher delays
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_00_49_59](https://github.com/user-attachments/assets/fbb6ee45-8db2-4658-82f1-ad3dc94774bc)
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_06_56_21](https://github.com/user-attachments/assets/6fa325bd-9468-4433-a4ab-6a2032433add)
+  - Slack after decreased
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_06_56_52](https://github.com/user-attachments/assets/e092622d-4f39-4f47-a975-d0b28f6dcd20)
+  - Replace more
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_07_00_53](https://github.com/user-attachments/assets/a06a0bd3-93d4-486a-b894-62bb051434c5)
+  - Slack further reduced to -2.68 (still in violation but we can fix that after cts as we replace ideal clock with actual one)
+  - ![VirtualBox_vsdworkshop_nasscom_rohan_20_08_2024_07_12_49](https://github.com/user-attachments/assets/d8c835c3-bf1e-43f0-84c1-5f7493874ee9)
+
+### Run Clock tree synthesis
+![image](https://github.com/user-attachments/assets/cae9122c-f962-47b6-9a53-b73a31e17a24)
+![image](https://github.com/user-attachments/assets/c47e7bdc-554e-4fe6-b782-c67f427b8fdc)
+
+
+
+
 
 
 
