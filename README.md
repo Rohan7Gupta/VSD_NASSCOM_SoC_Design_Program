@@ -131,6 +131,29 @@ Fig: Placed cells
   - Study spice deck for cell
   - study cell model files
   - Evaluate effect of size of pmos and nmos cells
+- We Then learned the basics of the fabrication process
+  - 16 mask CMOS process
+      - Selecting a substrate
+      - N well and P well formation
+      - Creating active region for transistors (mask1)
+      - Gate Formation
+      - Light doped drain (LDD) formation
+      - Source and drain formation
+      - Forming contacts and local interconnects
+      - Higher level metal formation
+- custom cell
+```
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic$ cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130.tech sky130_inv.mag 
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130A.tech sky130_inv.mag 
+
+ngspice sky130_inv.spice
+```
+- Extract the custom inverter cell using ext2spice
   - Extract cell
   - study cell layout using magic & check drc (lab)
   - run ngspice simulation
@@ -166,15 +189,4 @@ x0 = 4.05322e-09, y0 = 1.65012
 
 ==> 0.0032 ns
 ```
-  - custom cell
-```
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
 
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic$ cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130.tech sky130_inv.mag 
-
-vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130A.tech sky130_inv.mag 
-
-ngspice sky130_inv.spice
-```
