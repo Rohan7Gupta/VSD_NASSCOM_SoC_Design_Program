@@ -123,3 +123,58 @@ Fig: Placed cells
       ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/prop%20delay.png)
     - Transition time
       ![](https://github.com/Rohan7Gupta/VSD_NASSCOM_SoC_Design_Program/blob/main/day2/transition.png)
+
+
+# Day 3
+- Std cell desgined and available at https://github.com/nickson-jose/vsdstdcelldesign
+- Not covered in detail in this course
+- Study spice deck for cell
+- study cell model files
+- Evaluate effect of size of pmos and nmos cells
+- Extract cell
+- study cell layout using magic & check drc (lab)
+- run ngspice simulation
+- calculated
+  - fall transition
+```
+x0 = 2.18e-09, y0 = 0.66
+
+x0 = 2.121e-09, y0 = 2.63979
+
+==> 0.059ns
+```
+  - rise transition
+```
+x0 = 4.02002e-09, y0 = 0.659928
+
+x0 = 4.08115e-09, y0 = 2.64128
+
+==> 0.06113 ns
+```
+  - fall delay
+```
+x1 = 2.15007e-09, y1 = 1.65
+x0 = 2.18664e-09, y0 = 1.65
+
+==> 0.03657 ns
+```
+  - rise delay
+```
+x0 = 4.05002e-09, y0 = 1.64994
+
+x0 = 4.05322e-09, y0 = 1.65012
+
+==> 0.0032 ns
+```
+- custom cell
+```
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic$ cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130.tech sky130_inv.mag 
+
+vsduser@vsdsquadron:~/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign$ magic -T sky130A.tech sky130_inv.mag 
+
+ngspice sky130_inv.spice
+```
