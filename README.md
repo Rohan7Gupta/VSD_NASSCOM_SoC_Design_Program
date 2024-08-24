@@ -1,4 +1,7 @@
 # Digital VLSI design & SoC planning - NASSCOM, VSD
+This Readme is  a record of work done in the digital VLSI design & SoC planning course 5 day workshop by VSD and NASSCOM. 
+![image](https://github.com/user-attachments/assets/8d78d017-2779-49ac-999c-370e2956e27b)
+
 
 ## Day 1
 - introduction to open source SoC design tools and the various parties involved
