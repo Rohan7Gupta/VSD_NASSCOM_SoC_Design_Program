@@ -343,10 +343,9 @@ run_placement
 ![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_20_11_44](https://github.com/user-attachments/assets/c601d0ae-345c-4def-80d4-2bd3d1bf3c35)
 
 ![rohang_placement_1](https://github.com/user-attachments/assets/7462d9dd-d203-4f93-83c0-45a232023fc6)
-
-
 Fig: Our cell in placement
 
+### running pre STA
 
 
 
