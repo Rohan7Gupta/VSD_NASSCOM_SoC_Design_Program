@@ -1,6 +1,5 @@
 # Digital VLSI design & SoC planning - NASSCOM, VSD
-## TOC
-- [Day 1](#Day 1)
+
 ## Day 1
 - introduction to open source SoC design tools and the various parties involved
 - introduction to Openlane flow
