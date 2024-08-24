@@ -270,6 +270,33 @@ Poly resistor spacing to poly or spacing (no overlap) to diff/tap 0.480µm
     ![VirtualBox_vsdworkshop_nasscom_rohan_18_08_2024_19_36_33](https://github.com/user-attachments/assets/62fff7cd-2900-4053-93f6-926974a3d865)
     ![VirtualBox_vsdworkshop_nasscom_rohan_18_08_2024_19_39_04](https://github.com/user-attachments/assets/1f2c30e6-982a-412a-9776-d5a27367fa23)
 
+## Day 4
+### Lef file extraction
+- For pnr we only need vdd, gnd , input and output
+- This info is in LEF file
+- No logic info, so we protects IP
+- Extract LEF file and plug into picorv32 flow
+- Input and output port must lie on intersection of vertical and horizontal power tracks
+- Width of std cell odd multiple of track pitch and height odd multiple of track verticle pitch
+- Stdcell design: ports should be on intersection of horizontal and vertical tracks
+- Each track spaced 0.34 verticals and 0.46 horizontal, for every metal layer
+- ![VirtualBox_vsdworkshop_nasscom_rohan_18_08_2024_21_21_37](https://github.com/user-attachments/assets/1ef3d8bf-9e24-44dd-954e-7345609f80c0)
+- width of std cell odd multiple of x pitch (0.46)
+- ![VirtualBox_vsdworkshop_nasscom_rohan_18_08_2024_21_30_35](https://github.com/user-attachments/assets/dfdd9266-0b6c-41b0-ac7a-5d8fb62f4fd8)
+- ![image](https://github.com/user-attachments/assets/d518011e-ef3e-4d6b-b2d0-ad74a06ae127)
+- ![image](https://github.com/user-attachments/assets/9071f0ef-32f4-42bd-a645-a3fc7cbb7de0)
+- Extract lef file now
+- ![VirtualBox_vsdworkshop_nasscom_rohan_18_08_2024_21_56_41](https://github.com/user-attachments/assets/57c42b6f-5c79-4db5-8985-e5285f3ced5a)
+- Extracted cell
+- ![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_10_55_00](https://github.com/user-attachments/assets/4904538e-fa4c-4d9b-a6ea-1e73762bbb67)
+- we use sky130_fd_sc_hd__typical.lib
+  
+### Running the openlane flow with our custom cell
+
+
+
+
+
 
 
 
