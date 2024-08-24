@@ -292,12 +292,60 @@ Poly resistor spacing to poly or spacing (no overlap) to diff/tap 0.480µm
 - we use sky130_fd_sc_hd__typical.lib
   
 ### Running the openlane flow with our custom cell
+```
+prep -design picorv32a : create new runs
+prep -design picorv32a -tag 15-09_06-28 -overwrite : use that dir
+
+run_synthesis
+
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+echo $::env(SYNTH_STRATEGY)
+set ::env(SYNTH_STRATEGY) DELAY
+
+```
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_11_30_27](https://github.com/user-attachments/assets/b1244542-58d7-4475-b6e7-89ad4ccbf2d7)
+Fig: Running Synthesis
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_11_30_36](https://github.com/user-attachments/assets/0559ae21-a16c-4029-9354-3d318d793b5a)
+Fig: config.tcl
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_11_39_58](https://github.com/user-attachments/assets/21263085-2018-499a-a1a2-640e296cf9d0)
+Fig: Our cell in synthesis file
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_11_40_17](https://github.com/user-attachments/assets/df51b846-1d54-47fd-84ef-be88216f9fc2)
+Fig: Our custom cell in synthesis logs
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_11_40_25](https://github.com/user-attachments/assets/d611627e-19c2-4be0-beb9-feb16b1c779b)
+Fig: Synthesis successful
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_18_41_02](https://github.com/user-attachments/assets/dd583e97-2428-4653-b106-c3649c63824b)
+Fig: pre-STA result
+- set synth strategy from AREA 0 to DELAY 0 (to reduce delay & slack)
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_00_09](https://github.com/user-attachments/assets/8e023432-fd70-4090-be61-1e146e086498)
+- set synth buffering & sizing
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_13_35](https://github.com/user-attachments/assets/7f659ac7-e8db-4e8f-a8e4-1d880f131eb5)
+
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_20_37](https://github.com/user-attachments/assets/3c9b41be-3b7a-4838-a19e-b2b4b7ac4aeb)
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_23_12](https://github.com/user-attachments/assets/5841f2d1-412e-44f9-b9ff-eeb576bfa32b)
+- Now we run synthesis again
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_19_33_22](https://github.com/user-attachments/assets/a46033f8-a6ef-4963-8e3e-c93f0f768db8)
+- Our cell in merged.lef
+- now we run floorplanning and placement again
+- For floorplanning, run_floorplan does'nt work, so we use
+```
+init_floorplan
+place_io
+tap_decap_or
+```
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_20_09_42](https://github.com/user-attachments/assets/a0669636-4ea6-4884-a779-805ef45258c4)
+
+- run placement
+```
+run_placement
+```
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_20_13_11](https://github.com/user-attachments/assets/ddc21f9c-4d55-4198-a527-0d1724f52c0d)
+
+![VirtualBox_vsdworkshop_nasscom_rohan_19_08_2024_20_11_44](https://github.com/user-attachments/assets/c601d0ae-345c-4def-80d4-2bd3d1bf3c35)
+
+![rohang_placement_1](https://github.com/user-attachments/assets/7462d9dd-d203-4f93-83c0-45a232023fc6)
 
 
-
-
-
-
+Fig: Our cell in placement
 
 
 
